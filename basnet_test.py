@@ -65,7 +65,7 @@ if __name__ == '__main__':
 	#test_salobj_dataset = SalObjDataset(img_name_list = img_name_list, lbl_name_list = [],transform=transforms.Compose([RescaleT(256),ToTensorLab(flag=0)]))
 	#test_salobj_dataset = cityscapesDataset(image_path=image_dir, transform=transforms.Compose([transforms.RandomCrop(256), ToTensorLab(flag=0)]))
 	test_salobj_dataset = cityscapesDataset(image_path=image_dir, transform=transforms.Compose([transforms.RandomCrop(256), transforms.ToTensor()]))
-	test_salobj_dataloader = DataLoader(test_salobj_dataset, batch_size=1,shuffle=False,num_workers=1)
+	test_salobj_dataloader = DataLoader(test_salobj_dataset, batch_size=1, shuffle=False, num_workers=1)
 	
 	# --------- 3. model define ---------
 	print("...load BASNet...")
@@ -76,8 +76,10 @@ if __name__ == '__main__':
 	net.eval()
 	
 	# --------- 4. inference for each image ---------
-	for i_test, data_test in enumerate(test_salobj_dataloader):
-	
+	data_iter = iter(test_salobj_dataloader)
+	#for i_test, data_test in enumerate(test_salobj_dataloader):
+	for i_test, data_test in enumerate(data_iter):
+
 		#print("inferencing:",img_name_list[i_test].split("/")[-1])
 		print('inferencing... ', i_test)
 	

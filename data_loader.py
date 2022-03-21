@@ -298,3 +298,68 @@ class SalObjDataset(Dataset):
 			sample = self.transform(sample)
 
 		return sample
+
+
+def recursive_glob(rootdir=".", suffix=""):
+    """Performs recursive glob with given suffix and rootdir
+        :param rootdir is the root directory
+        :param suffix is the suffix to be searched
+    """
+    return [
+        os.path.join(looproot, filename)
+        for looproot, _, filenames in os.walk(rootdir)
+        for filename in filenames
+        if filename.endswith(suffix)
+    ]
+
+
+class cityscapesDataset(data.Dataset):
+    def __init__(
+        self,
+        image_path,
+        split="train",
+        n_samples= -1,        # Select only few samples for training
+        size="tiny",
+		transform=None
+    ):
+        self.image_path = image_path
+        self.split = split
+        if size == "small":
+            self.img_size = (1024, 512) # w, h -- PIL uses (w, h) format
+        elif size == "tiny":
+            self.img_size = (512, 256)
+        else:
+            raise Exception('size not valid')
+
+        self.n_samples = n_samples
+        self.files = {}
+        self.images_base = os.path.join(self.image_path, self.split)
+
+        self.files[split] = sorted(recursive_glob(rootdir=self.images_base, suffix=".jpg"))
+        if self.n_samples >= 0:
+            self.files[split] = self.files[split][:self.n_samples]
+    
+        if not self.files[split]:
+            raise Exception("No files for split=[%s] found in %s" % (split, self.images_base))
+
+        print("Found %d %s images" % (len(self.files[split]), split))
+
+    def __len__(self):
+        """__len__"""
+        return len(self.files[self.split])
+
+    def __getitem__(self, index):
+        """__getitem__
+        :param index:
+        """
+        img_path = self.files[self.split][index].rstrip()
+            
+        # Image
+        img = pil_loader(img_path, self.img_size[0], self.img_size[1])
+        img = self.transforms(img)
+
+		sample = {'image': img, 'label': np.zeros(image.shape[:2])}
+
+        return sample
+
+

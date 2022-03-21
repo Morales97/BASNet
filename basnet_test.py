@@ -55,11 +55,11 @@ def save_output(image_name,pred,d_dir):
 if __name__ == '__main__':
 	# --------- 1. get image path and name ---------
 	
-	image_dir = './test_data/test_images/'
+	image_dir = './test_data/cityscapes/leftImg8bit_tiny/'
 	prediction_dir = './test_data/test_results/'
-	model_dir = './saved_models/basnet_bsi/basnet.pth'
+	model_dir = './saved_models/basnet.pth'
 	
-	img_name_list = glob.glob(image_dir + '*.jpg')
+	#img_name_list = glob.glob(image_dir + '*.jpg')
 	
 	# --------- 2. dataloader ---------
 	#1. dataload
@@ -78,7 +78,8 @@ if __name__ == '__main__':
 	# --------- 4. inference for each image ---------
 	for i_test, data_test in enumerate(test_salobj_dataloader):
 	
-		print("inferencing:",img_name_list[i_test].split("/")[-1])
+		#print("inferencing:",img_name_list[i_test].split("/")[-1])
+		print('inferencing... ', i_test)
 	
 		inputs_test = data_test['image']
 		inputs_test = inputs_test.type(torch.FloatTensor)

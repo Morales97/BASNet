@@ -18,7 +18,6 @@ from data_loader import CenterCrop
 from data_loader import ToTensor
 from data_loader import ToTensorLab
 from data_loader import SalObjDataset, cityscapesDataset
-from torchvision.transforms import RandomCrop
 
 from model import BASNet
 
@@ -64,7 +63,8 @@ if __name__ == '__main__':
 	# --------- 2. dataloader ---------
 	#1. dataload
 	#test_salobj_dataset = SalObjDataset(img_name_list = img_name_list, lbl_name_list = [],transform=transforms.Compose([RescaleT(256),ToTensorLab(flag=0)]))
-	test_salobj_dataset = cityscapesDataset(image_path=image_dir, transform=transforms.Compose([RandomCrop(256), ToTensorLab(flag=0)]))
+	#test_salobj_dataset = cityscapesDataset(image_path=image_dir, transform=transforms.Compose([transforms.RandomCrop(256), ToTensorLab(flag=0)]))
+	test_salobj_dataset = cityscapesDataset(image_path=image_dir, transform=transforms.Compose([transforms.RandomCrop(256), transforms.ToTensor()]))
 	test_salobj_dataloader = DataLoader(test_salobj_dataset, batch_size=1,shuffle=False,num_workers=1)
 	
 	# --------- 3. model define ---------

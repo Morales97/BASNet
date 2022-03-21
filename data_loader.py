@@ -5,6 +5,8 @@ import torch
 from skimage import io, transform, color
 import numpy as np
 import math
+from PIL import Image
+
 import os
 import matplotlib.pyplot as plt
 from torch.utils.data import Dataset, DataLoader
@@ -313,6 +315,15 @@ def recursive_glob(rootdir=".", suffix=""):
         if filename.endswith(suffix)
     ]
 
+
+def pil_loader(_path, width, height):
+    # open path as file to avoid ResourceWarning
+    # (https://github.com/python-pillow/Pillow/issues/835)
+    with open(_path, 'rb') as f:
+        with Image.open(f) as _img:
+			_img = _img.convert('RGB')
+			if resize: _img = _img.resize(_build_size(_img, width, height), Image.ANTIALIAS)
+    return _img
 
 class cityscapesDataset(Dataset):
     def __init__(

@@ -358,7 +358,7 @@ class cityscapesDataset(data.Dataset):
         img = pil_loader(img_path, self.img_size[0], self.img_size[1])
         img = self.transforms(img)
 
-		sample = {'image': img, 'label': np.zeros(image.shape[:2])}
+		sample = {'image': img, 'label': np.zeros(img.shape[:2])}
 
         return sample
 

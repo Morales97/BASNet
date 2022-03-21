@@ -321,8 +321,8 @@ def pil_loader(_path, width, height):
     # (https://github.com/python-pillow/Pillow/issues/835)
     with open(_path, 'rb') as f:
         with Image.open(f) as _img:
-			_img = _img.convert('RGB')
-			if resize: _img = _img.resize(_build_size(_img, width, height), Image.ANTIALIAS)
+            _img = _img.convert('RGB')
+            if resize: _img = _img.resize(_build_size(_img, width, height), Image.ANTIALIAS)
     return _img
 
 class cityscapesDataset(Dataset):

@@ -59,7 +59,7 @@ if __name__ == '__main__':
 	prediction_dir = './test_data/test_results/'
 	model_dir = './saved_models/basnet.pth'
 	
-	#img_name_list = glob.glob(image_dir + '*.jpg')
+	img_name_list = glob.glob(image_dir + '*.jpg')
 	
 	# --------- 2. dataloader ---------
 	#1. dataload

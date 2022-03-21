@@ -313,7 +313,7 @@ def recursive_glob(rootdir=".", suffix=""):
     ]
 
 
-class cityscapesDataset(data.Dataset):
+class cityscapesDataset(Dataset):
     def __init__(
         self,
         image_path,

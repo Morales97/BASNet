@@ -7,6 +7,7 @@ import numpy as np
 import math
 from PIL import Image
 
+import pdb
 import os
 import matplotlib.pyplot as plt
 from torch.utils.data import Dataset, DataLoader
@@ -361,6 +362,11 @@ class cityscapesDataset(Dataset):
         """__len__"""
         return len(self.files[self.split])
 
+	def get_img_name(self, index):
+		self.files[self.split][index].rstrip()
+		pdb.set_trace()
+		return
+
     def __getitem__(self, index):
         """__getitem__
         :param index:
@@ -372,7 +378,7 @@ class cityscapesDataset(Dataset):
         img = self.transforms(img)
 
         lbl = np.zeros((512, 256))
-        sample = {'image': img, 'label': lbl}
+        sample = {'image': img, 'label': lbl, 'index': index}
 
         return sample
 

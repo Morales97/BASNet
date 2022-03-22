@@ -345,6 +345,7 @@ class cityscapesDataset(Dataset):
 
         self.n_samples = n_samples
         self.files = {}
+		self.transforms = transform
         self.images_base = os.path.join(self.image_path, self.split)
 
         self.files[split] = sorted(recursive_glob(rootdir=self.images_base, suffix=".jpg"))

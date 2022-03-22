@@ -64,7 +64,7 @@ if __name__ == '__main__':
 	# --------- 1. get image path and name ---------
 	
 	image_dir = './test_data/cityscapes/leftImg8bit_tiny/'
-	save_dir = './test_data/test_results/'
+	save_dir = './test_data/no_crop_test_results/'
 	model_dir = './saved_models/basnet.pth'
 	
 	img_name_list = glob.glob(image_dir + '*.jpg')
@@ -73,7 +73,8 @@ if __name__ == '__main__':
 	#1. dataload
 	#test_salobj_dataset = SalObjDataset(img_name_list = img_name_list, lbl_name_list = [],transform=transforms.Compose([RescaleT(256),ToTensorLab(flag=0)]))
 	#test_salobj_dataset = cityscapesDataset(image_path=image_dir, transform=transforms.Compose([transforms.RandomCrop(256), ToTensorLab(flag=0)]))
-	cs_dataset = cityscapesDataset(image_path=image_dir, transform=transforms.Compose([transforms.RandomCrop(256), transforms.ToTensor()]))
+	#cs_dataset = cityscapesDataset(image_path=image_dir, transform=transforms.Compose([transforms.RandomCrop(256), transforms.ToTensor()]))
+	cs_dataset = cityscapesDataset(image_path=image_dir, transform=transforms.Compose([transforms.ToTensor()]), n_samples=20)
 	test_salobj_dataloader = DataLoader(cs_dataset, batch_size=1, shuffle=False, num_workers=1)
 	
 	# --------- 3. model define ---------

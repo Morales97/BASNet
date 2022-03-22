@@ -57,8 +57,7 @@ if __name__ == '__main__':
 	net.eval()
 	
 	# --------- 4. inference for each image ---------
-	data_iter = iter(dataloader)
-	for i, data in tqdm(enumerate(data_iter)):
+	for data in tqdm(dataloader):
 
 		#print('inferencing... ', i)
 	

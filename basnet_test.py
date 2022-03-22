@@ -50,10 +50,13 @@ def save_output(image_name,pred,d_dir):
 
 	imo.save(d_dir+imidx+'.png')
 
-def save_output_cs(save_path, pred):
+def save_output_cs(save_dir, save_name, pred):
+	os.makedirs(save_dir, exist_ok=True)
+
 	pred = pred.squeeze().cpu().data.numpy()
 	im = Image.fromarray(pred*255).convert('RGB')
-	im.save(save_path + '.png')
+
+	im.save(save_dir + save_name + '.png')
 
 
 if __name__ == '__main__':
@@ -105,8 +108,7 @@ if __name__ == '__main__':
 		# save results to test_results folder
 		#save_output(img_name_list[i_test],pred,save_dir)
 
-		save_path = save_dir + cs_dataset.get_img_save_path(data_test['index'])
-		pdb.set_trace()
-		save_output_cs(save_path, pred)
+		save_dir2, save_name = cs_dataset.get_img_save_path(data_test['index'])
+		save_output_cs(save_dir + save_dir2, save_name, pred)
 	
 		del d1,d2,d3,d4,d5,d6,d7,d8

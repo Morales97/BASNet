@@ -106,6 +106,7 @@ if __name__ == '__main__':
 		#save_output(img_name_list[i_test],pred,save_dir)
 
 		save_path = save_dir + cs_dataset.get_img_save_path(data_test['index'])
+		pdb.set_trace()
 		save_output_cs(save_path, pred)
 	
 		del d1,d2,d3,d4,d5,d6,d7,d8

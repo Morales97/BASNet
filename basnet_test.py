@@ -12,7 +12,7 @@ import pdb
 import numpy as np
 from PIL import Image
 import glob
-import tqdm
+from tqdm import tqdm
 from data_loader import cityscapesDataset
 
 from model import BASNet

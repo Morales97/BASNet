@@ -362,9 +362,8 @@ class cityscapesDataset(Dataset):
         """__len__"""
         return len(self.files[self.split])
 
-    def get_img_name(self, index):
-        self.files[self.split][index].rstrip()
-        pdb.set_trace()
+    def get_img_save_path(self, index):
+        img_path = self.files[self.split][index]
         return
 
     def __getitem__(self, index):

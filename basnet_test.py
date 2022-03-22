@@ -50,12 +50,17 @@ def save_output(image_name,pred,d_dir):
 
 	imo.save(d_dir+imidx+'.png')
 
+def save_output_cs(save_path, pred)
+	pred = pred.squeeze().cpu().data.numpy()
+	im = Image.fromarray(predict_np*255).convert('RGB')
+	pdb.set_trace()
+
 
 if __name__ == '__main__':
 	# --------- 1. get image path and name ---------
 	
 	image_dir = './test_data/cityscapes/leftImg8bit_tiny/'
-	prediction_dir = './test_data/test_results/'
+	save_dir = './test_data/test_results/'
 	model_dir = './saved_models/basnet.pth'
 	
 	img_name_list = glob.glob(image_dir + '*.jpg')
@@ -99,7 +104,7 @@ if __name__ == '__main__':
 
 		test_salobj_dataset.get_img_name(data_test['index'])
 		# save results to test_results folder
-		#save_output(img_name_list[i_test],pred,prediction_dir)
-		save_output(img_name_list[i_test],pred,prediction_dir)
+		#save_output(img_name_list[i_test],pred,save_dir)
+		save_output_cs('', pred)
 	
 		del d1,d2,d3,d4,d5,d6,d7,d8

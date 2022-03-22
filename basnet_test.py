@@ -12,12 +12,8 @@ import pdb
 import numpy as np
 from PIL import Image
 import glob
-
-from data_loader import RescaleT
-from data_loader import CenterCrop
-from data_loader import ToTensor
-from data_loader import ToTensorLab
-from data_loader import SalObjDataset, cityscapesDataset
+import tqdm
+from data_loader import cityscapesDataset
 
 from model import BASNet
 
@@ -29,28 +25,7 @@ def normPRED(d):
 
 	return dn
 
-def save_output(image_name,pred,d_dir):
-
-	predict = pred
-	predict = predict.squeeze()
-	predict_np = predict.cpu().data.numpy()
-
-	im = Image.fromarray(predict_np*255).convert('RGB')
-	img_name = image_name.split("/")[-1]
-	image = io.imread(image_name)
-	imo = im.resize((image.shape[1],image.shape[0]),resample=Image.BILINEAR)
-
-	pb_np = np.array(imo)
-
-	aaa = img_name.split(".")
-	bbb = aaa[0:-1]
-	imidx = bbb[0]
-	for i in range(1,len(bbb)):
-		imidx = imidx + "." + bbb[i]
-
-	imo.save(d_dir+imidx+'.png')
-
-def save_output_cs(save_dir, save_name, pred):
+def save_output(save_dir, save_name, pred):
 	os.makedirs(save_dir, exist_ok=True)
 
 	pred = pred.squeeze().cpu().data.numpy()
@@ -64,18 +39,14 @@ if __name__ == '__main__':
 	# --------- 1. get image path and name ---------
 	
 	image_dir = './test_data/cityscapes/leftImg8bit_tiny/'
-	save_dir = './test_data/no_crop_test_results/'
+	save_dir = './test_data/test_results_no_crop/'
 	model_dir = './saved_models/basnet.pth'
-	
-	img_name_list = glob.glob(image_dir + '*.jpg')
-	
+		
 	# --------- 2. dataloader ---------
 	#1. dataload
-	#test_salobj_dataset = SalObjDataset(img_name_list = img_name_list, lbl_name_list = [],transform=transforms.Compose([RescaleT(256),ToTensorLab(flag=0)]))
-	#test_salobj_dataset = cityscapesDataset(image_path=image_dir, transform=transforms.Compose([transforms.RandomCrop(256), ToTensorLab(flag=0)]))
-	#cs_dataset = cityscapesDataset(image_path=image_dir, transform=transforms.Compose([transforms.RandomCrop(256), transforms.ToTensor()]))
-	cs_dataset = cityscapesDataset(image_path=image_dir, transform=transforms.Compose([transforms.ToTensor()]), n_samples=20)
-	test_salobj_dataloader = DataLoader(cs_dataset, batch_size=1, shuffle=False, num_workers=1)
+	transform = transforms.Compose([transforms.ToTensor()])
+	dataset = cityscapesDataset(image_path=image_dir, transform=transform)
+	dataloader = DataLoader(dataset, batch_size=1, shuffle=False, num_workers=1)
 	
 	# --------- 3. model define ---------
 	print("...load BASNet...")
@@ -86,31 +57,25 @@ if __name__ == '__main__':
 	net.eval()
 	
 	# --------- 4. inference for each image ---------
-	data_iter = iter(test_salobj_dataloader)
-	#for i_test, data_test in enumerate(test_salobj_dataloader):
-	for i_test, data_test in enumerate(data_iter):
+	data_iter = iter(dataloader)
+	for i, data in tqdm(enumerate(data_iter)):
 
-		#print("inferencing:",img_name_list[i_test].split("/")[-1])
-		print('inferencing... ', i_test)
+		#print('inferencing... ', i)
 	
-		inputs_test = data_test['image']
+		inputs_test = data['image']
 		inputs_test = inputs_test.type(torch.FloatTensor)
-	
 		if torch.cuda.is_available():
-			inputs_test = Variable(inputs_test.cuda())
-		else:
-			inputs_test = Variable(inputs_test)
-	
-		d1,d2,d3,d4,d5,d6,d7,d8 = net(inputs_test)
-	
-		# normalization
-		pred = d1[:,0,:,:]
-		#pred = normPRED(pred)
-		pdb.set_trace()
-		# save results to test_results folder
-		#save_output(img_name_list[i_test],pred,save_dir)
+			inputs_test.cuda()
 
-		save_dir2, save_name = cs_dataset.get_img_save_path(data_test['index'])
+		inputs_test = Variable(inputs_test)
+		d1,d2,d3,d4,d5,d6,d7,d8 = net(inputs_test)
+		pred = d1[:,0,:,:]
+		
+		# normalization
+		pred = normPRED(pred)
+
+		# save
+		save_dir2, save_name = dataset.get_img_save_path(data['index'])
 		save_output_cs(save_dir + save_dir2, save_name, pred)
 	
 		del d1,d2,d3,d4,d5,d6,d7,d8

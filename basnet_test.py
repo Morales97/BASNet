@@ -57,7 +57,6 @@ def save_output_cs(save_dir, save_name, pred):
 	im = Image.fromarray(pred*255).convert('RGB')
 
 	save_path = save_dir + '/' + save_name + '.png'
-	pdb.set_trace()
 	im.save(save_path)
 
 
@@ -74,7 +73,7 @@ if __name__ == '__main__':
 	#1. dataload
 	#test_salobj_dataset = SalObjDataset(img_name_list = img_name_list, lbl_name_list = [],transform=transforms.Compose([RescaleT(256),ToTensorLab(flag=0)]))
 	#test_salobj_dataset = cityscapesDataset(image_path=image_dir, transform=transforms.Compose([transforms.RandomCrop(256), ToTensorLab(flag=0)]))
-	cs_dataset = cityscapesDataset(image_path=image_dir, transform=transforms.Compose([transforms.RandomCrop(256), transforms.ToTensor()]), n_samples=20)
+	cs_dataset = cityscapesDataset(image_path=image_dir, transform=transforms.Compose([transforms.RandomCrop(256), transforms.ToTensor()]))
 	test_salobj_dataloader = DataLoader(cs_dataset, batch_size=1, shuffle=False, num_workers=1)
 	
 	# --------- 3. model define ---------

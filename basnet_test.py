@@ -53,7 +53,7 @@ def save_output(image_name,pred,d_dir):
 def save_output_cs(save_path, pred):
 	pred = pred.squeeze().cpu().data.numpy()
 	im = Image.fromarray(pred*255).convert('RGB')
-	pdb.set_trace()
+	im.save(save_path)
 
 
 if __name__ == '__main__':
@@ -69,7 +69,7 @@ if __name__ == '__main__':
 	#1. dataload
 	#test_salobj_dataset = SalObjDataset(img_name_list = img_name_list, lbl_name_list = [],transform=transforms.Compose([RescaleT(256),ToTensorLab(flag=0)]))
 	#test_salobj_dataset = cityscapesDataset(image_path=image_dir, transform=transforms.Compose([transforms.RandomCrop(256), ToTensorLab(flag=0)]))
-	cs_dataset = cityscapesDataset(image_path=image_dir, transform=transforms.Compose([transforms.RandomCrop(256), transforms.ToTensor()]))
+	cs_dataset = cityscapesDataset(image_path=image_dir, transform=transforms.Compose([transforms.RandomCrop(256), transforms.ToTensor()]), n_samples=20)
 	test_salobj_dataloader = DataLoader(cs_dataset, batch_size=1, shuffle=False, num_workers=1)
 	
 	# --------- 3. model define ---------
@@ -106,6 +106,6 @@ if __name__ == '__main__':
 		#save_output(img_name_list[i_test],pred,save_dir)
 
 		save_path = save_dir + cs_dataset.get_img_save_path(data_test['index'])
-		save_output_cs('', pred)
+		save_output_cs(save_path, pred)
 	
 		del d1,d2,d3,d4,d5,d6,d7,d8

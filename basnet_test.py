@@ -50,7 +50,7 @@ def save_output(image_name,pred,d_dir):
 
 	imo.save(d_dir+imidx+'.png')
 
-def save_output_cs(save_path, pred)
+def save_output_cs(save_path, pred):
 	pred = pred.squeeze().cpu().data.numpy()
 	im = Image.fromarray(predict_np*255).convert('RGB')
 	pdb.set_trace()

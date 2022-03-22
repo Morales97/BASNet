@@ -105,7 +105,7 @@ if __name__ == '__main__':
 	
 		# normalization
 		pred = d1[:,0,:,:]
-		pred = normPRED(pred)
+		#pred = normPRED(pred)
 
 		# save results to test_results folder
 		#save_output(img_name_list[i_test],pred,save_dir)

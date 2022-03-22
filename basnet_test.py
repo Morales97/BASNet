@@ -53,7 +53,7 @@ def save_output(image_name,pred,d_dir):
 def save_output_cs(save_path, pred):
 	pred = pred.squeeze().cpu().data.numpy()
 	im = Image.fromarray(pred*255).convert('RGB')
-	im.save(save_path)
+	im.save(save_path + '.png')
 
 
 if __name__ == '__main__':

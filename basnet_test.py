@@ -75,6 +75,6 @@ if __name__ == '__main__':
 
 		# save
 		save_dir2, save_name = dataset.get_img_save_path(data['index'])
-		save_output_cs(save_dir + save_dir2, save_name, pred)
+		save_output(save_dir + save_dir2, save_name, pred)
 	
 		del d1,d2,d3,d4,d5,d6,d7,d8

@@ -364,7 +364,8 @@ class cityscapesDataset(Dataset):
 
     def get_img_save_path(self, index):
         img_path = self.files[self.split][index]
-        return img_path
+
+        return img_path[-2] + '/' + img_path[-1]
 
     def __getitem__(self, index):
         """__getitem__

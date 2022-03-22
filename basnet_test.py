@@ -97,7 +97,7 @@ if __name__ == '__main__':
 		pred = d1[:,0,:,:]
 		pred = normPRED(pred)
 
-		test_salobj_dataset.get_img_name(data_test['index'])
+        test_salobj_dataset.get_img_name(data_test['index'])
 		# save results to test_results folder
 		#save_output(img_name_list[i_test],pred,prediction_dir)
 		save_output(img_name_list[i_test],pred,prediction_dir)
